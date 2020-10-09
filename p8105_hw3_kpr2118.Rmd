@@ -5,15 +5,9 @@ date: "10/10/2020"
 output: github_document
 ---
 
----
-title: "explor_analysis_data_sum"
-author: "Kailey Rishovd"
-date: "10/9/2020"
-output: github_document
----
-
 ```{r setup, include= FALSE}
 library(tidyverse)
+library(p8105.datasets)
 
 knitr::opts_chunk$set(
   fig.width = 6, 
@@ -31,3 +25,18 @@ options(
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
 ```
+
+## Problem 1 
+
+```{r}
+data("instacart")
+
+instacart
+```
+
+
+
+
+
+
+
