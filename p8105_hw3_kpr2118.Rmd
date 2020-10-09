@@ -1,5 +1,5 @@
 ---
-title: "p8105_hw3_kpr2118"
+title: "Homework 3 Solutions"
 author: "Kailey Rishovd"
 date: "10/10/2020"
 output: github_document
@@ -34,6 +34,71 @@ data("instacart")
 instacart
 ```
 
+This dataset contains `r nrow(instacart)` rows and `r ncol(instacart)` columns. 
+
+The dataset is extensive, providing details on the online grocery service. Observations are the level of items in an order by user. There are user / order variables -- user ID, order ID, order day, order hour, and reordered. There are also item variables -- name, aisle, department, and some numeric codes. Structurally, we can see that products are in aisles, aisles are in departments, and the tracker supplies information about each user, the products they buy, and where those products are found around local stores. Users are also tracked for how often they make orders, what they order and reorder, the order in which they shop, and when they shop. In this dataset, we are given the information for over 3 million orders from over 200k users.
+
+#### A little more context...  
+
+**How many aisles are there, and which are most items from?**
+
+```{r}
+instacart %>% 
+  count(aisle) %>% 
+  arrange(desc(n))
+```
+
+There are 134 aisles and most items are from the fresh vegetables aisle. 
+
+**Plot that shows the number of items ordered in each aisle...**
+
+```{r}
+instacart %>% 
+  count(aisle) %>% 
+  filter(n > 10000) %>% 
+  mutate(
+    aisle = factor(aisle),
+    aisle = fct_reorder(aisle, n)
+  ) %>% 
+  ggplot(aes(x = aisle, y = n)) + 
+  geom_point() + 
+  theme(axis.text.x = element_text(angle = 270, vjust = 0.5, hjust = 1))
+```
+
+From this plot we can see how many items were ordered in each aisle... arranged by asile with the least to the most items ordered. We can tell things such as, butter is ordered the least and fresh vegetables and fruits are ordered significantly more than other items. 
+
+
+**Table showing three most popular items in specified aisles... and how many times they have been ordered...**
+
+```{r}
+instacart %>% 
+  filter(aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits")) %>% 
+  group_by(aisle) %>% 
+  count(product_name) %>% 
+  mutate(
+    rank = min_rank(desc(n))
+  ) %>% 
+  filter(rank < 4) %>% 
+  arrange(aisle, rank) %>% 
+  knitr::kable()
+```
+
+From this table, we can see the 3 most popular items ordered from the "baking ingredients", "dog food care" and "packaged vegetables fruits" aisles - including how many times they have been ordered. The top ranking items in each aisle are LIght Brown Sugar, Snack Sticks Chicken and Rice Recipe Dog Treats, and Organic Baby Spinach, respectively. 
+
+**Table showing the mean hour of the day at which specified items are ordered on each day of the week...**
+
+```{r}
+instacart %>% 
+  filter(product_name %in% c("Pink Lady Apples", "Coffee Ice Cream")) %>%
+  group_by(product_name, order_dow) %>% 
+  summarize(mean_hour = mean(order_hour_of_day)) %>% 
+  pivot_wider(
+    names_from = order_dow, 
+    values_from = mean_hour
+  )
+```
+
+In this table, we see the mean hour of the day, per day of the week, that Pink Lady Apples and Coffee Ice Cream are ordered. Coffee Ice Cream is mainly ordered between hour 12 and 16. Pink Lady Apples are ordered around hours 11 and 15. 
 
 
 
