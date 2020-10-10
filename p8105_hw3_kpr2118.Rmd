@@ -138,10 +138,9 @@ After tidying up the data, we are left with a dataset that has `r nrow(accel_df)
 Now we can find total activity for each day and look for trends... 
 
 ```{r}
-accel_df = 
-  accel_df %>% 
+accel_df %>% 
   group_by(day_id, week) %>% 
-  summarise(total_day_activity = sum(activity_count, na.rm = TRUE)) %>%
+  summarize(total_day_activity = sum(activity_count)) %>%
   pivot_wider(
     names_from = week,
     values_from = total_day_activity,
