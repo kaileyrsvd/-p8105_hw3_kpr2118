@@ -179,7 +179,7 @@ ny_noaa
 
 The NY NOAA dataset is from the NOAA National Climatic Data Center. In the dataset there are `r nrow(ny_noaa)` rows and `r ncol(ny_noaa)` columns. It is meant to provide the public with weather data such as the Global Historical Climatology Network-Daily of weather stations in 180 countries. Variables include the station id, date of record, minimum and maximum temperatures, daily total precipitation, and snowfall and depth. However, the dataset is full of missing values because of stations not reporting or reporting partially... data descriptions report that  about half of the stations only report precipitation. 
 
-**Some more context... **
+**Some more context...** 
 
 Let's clean the data a bit... 
 
@@ -187,6 +187,50 @@ Let's clean the data a bit...
 ny_noaa = 
   ny_noaa %>% 
   separate(date, into = c("year", "month", "day"), sep = "-") %>% 
-  mutate_at(vars(year:day), as.integer)
+  mutate_at(vars(year:day), as.factor) %>% 
+  mutate_at(vars(snow:tmin), as.double) %>% 
+  mutate(
+    prcp = prcp/10, 
+    tmax = tmax/10, 
+    tmin = tmin/10,
+  )
+
+skimr::skim(ny_noaa)
+```
+
+And then let's look at the snowfall variable... 
+
+```{r}
+ny_noaa %>% 
+  count(snow) %>% 
+  arrange(desc(n))
+```
+
+The most commonly observed values in order from 1-3 are: 0mm, NA, and 25mm. This is
+likely due to places with little snowfall reporting the most and many stations not reporting at all. 
+
+Now... let's make a plot... 
+
+```{r}
+ny_noaa %>% 
+    filter(
+    month %in% c("01", "07")
+    ) %>% 
+    group_by(month, year, id) %>% 
+  summarize(
+    mean_tmax = mean(tmax, na.rm = TRUE)
+  ) %>% 
+  ggplot(aes(x = year, y = mean_tmax, group = id, color = id)) +
+  geom_point() + 
+  geom_line() +
+  facet_grid(. ~ month) +
+  theme(legend.position = "none") +
+  theme(axis.text.x = element_text(angle = 270, vjust = 0.5, hjust = 1)) +
+  labs(
+    title = "Average max temperature Jan/July 1981-2010, across stations", 
+    x = "Year", 
+    y = "Avgerage max temp (C)", 
+    caption = "Data from ny noaa package"
+  )
 ```
 
