@@ -107,27 +107,42 @@ Load and tidy the data...
 
 ```{r}
 accel_df = read_csv("./data/accel_data.csv")
-accel_df
 
-accel_df %>% 
-  pivot_longer(
-    activity.1:activity.1440, 
-    names_to = "minute_of_day",
-    values_to = "activity_count", 
-    names_prefix = "activity."
-  ) %>% 
-  mutate(
-    Wkend_vs_Wkday = case_when(
-      day == "Monday" ~ "Weekday",
-      day == "Tuesday" ~ "Weekday",
-      day == "Wednesday" ~ "Weekday", 
-      day == "Thursday" ~ "Weekday", 
-      day == "Friday" ~ "Weekday", 
-      day == "Saturday" ~ "Weekend", 
-      day == "Sunday" ~ "Weekend",
-    )
-  )
+accel_df = 
+  accel_df %>%
+    pivot_longer(
+      activity.1:activity.1440, 
+      names_to = "minute_of_day",
+      values_to = "activity_count", 
+      names_prefix = "activity."
+    ) %>%
+    mutate(
+      Wkend_vs_Wkday = case_when(
+        day == "Monday" ~ "Weekday",
+        day == "Tuesday" ~ "Weekday",
+        day == "Wednesday" ~ "Weekday", 
+        day == "Thursday" ~ "Weekday", 
+        day == "Friday" ~ "Weekday", 
+        day == "Saturday" ~ "Weekend", 
+        day == "Sunday" ~ "Weekend",
+      )) %>% 
+    mutate(
+      day = as.factor(day), 
+      minute_of_day = as.double(minute_of_day), 
+      Wkend_vs_Wkday = as.factor(Wkend_vs_Wkday),
+      )
 ```
 
+After tidying up the data, we are left with a dataset that has `r nrow(accel_df)` rows and `r ncol(accel_df)` columns. It consists of the information for five weeks of accelerometer data for a 63-year-old male with BMI 25 and congestive heart failure. The dataset has variables for each week, day of the week, minute of the day, and activity count at each minute of the day... with additional grouping information like weekend vs. weekday. 
 
+Now we can find total activity for each day and look for trends... 
+
+```{r}
+accel_df = 
+  accel_df %>% 
+  group_by(day_id) %>% 
+  mutate(
+    total_day_activity = sum(activity_count)
+  )
+```
 
