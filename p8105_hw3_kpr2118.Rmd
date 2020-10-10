@@ -8,6 +8,7 @@ output: github_document
 ```{r setup, include= FALSE}
 library(tidyverse)
 library(p8105.datasets)
+library(patchwork)
 
 knitr::opts_chunk$set(
   fig.width = 6, 
@@ -220,7 +221,7 @@ ny_noaa %>%
   ) %>% 
   ggplot(aes(x = year, y = mean_tmax, group = id, color = id)) +
   geom_point() + 
-  geom_line() +
+  geom_path() + 
   facet_grid(. ~ month) +
   theme(legend.position = "none") +
   theme(axis.text.x = element_text(angle = 270, vjust = 0.5, hjust = 1)) +
@@ -232,4 +233,26 @@ ny_noaa %>%
   )
 ```
 
-From this two-panel plot, we can see the average max temperature in both January (01) and July (07) across the years 1981-2010, for each station that reported data. It is clear that it was significantly cooler in January and hotter in July, that in 1982/1993/2005 there were outliers with lower avg. max temps in January (and several outliers in July), and that there were annual shifts in temperatures. Avg. max temperatures were at their lowest in Jan. 1994/2004, and July 1992/2000/2009. Conversely, they spiked approximately every 2-3 years in January and every 2-7 years in July. 
+From this two-panel plot, we can see the average max temperature in both January (01) and July (07) across the years 1981-2010, for each station that reported data. It is clear that it was significantly cooler in January and hotter in July, that in 1982/1993/2005 there were outliers with lower avg. max temps in January (and several outliers in July), and that there were annual shifts in temperatures. Avg. max temperatures were at their lowest in Jan. 1994/2004, and July 1992/2000/2009. Conversely, they spiked approximately every 2-3 years in January and every 2-7 years in July. Last, following the path lines, it looks like some stations are always hotter or cooler, in general. 
+
+So let's make some more plots...
+
+```{r}
+tmaxmin_p = 
+  ny_noaa %>% 
+    ggplot(aes(x = tmax, y = tmin)) +
+    geom_hex() + 
+    theme(legend.text = element_text(angle = 270, vjust = 0.1, hjust = 1))
+
+snowfall_p = 
+  ny_noaa %>% 
+    filter(snow > 0 & snow < 100) %>% 
+    ggplot(aes(x = year, y = snow, fill = year)) +
+    geom_violin() +
+    theme(axis.text.x = element_text(angle = 270, vjust = 0.5, hjust = 1)) +
+    theme(legend.position = "none")
+    
+tmaxmin_p + snowfall_p
+```
+
+In the plots above, we can see the tmax vs. tmin for the full dataset and the distribution of snowfall for values 0-100, by year. The plots allow us to visualize these aspects. We can see that the temperatures are generally between -15 to +30 (C) and that snowfall tends to be seasonal with most of the snowfall is generally has the largest values around 1 - 35mm, 50mm, and 75mm. We can also see outliers in temp min and max and see the year to year changes in snowfall. 
