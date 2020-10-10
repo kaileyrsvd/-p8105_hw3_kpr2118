@@ -194,8 +194,6 @@ ny_noaa =
     tmax = tmax/10, 
     tmin = tmin/10,
   )
-
-skimr::skim(ny_noaa)
 ```
 
 And then let's look at the snowfall variable... 
@@ -234,3 +232,4 @@ ny_noaa %>%
   )
 ```
 
+From this two-panel plot, we can see the average max temperature in both January (01) and July (07) across the years 1981-2010, for each station that reported data. It is clear that it was significantly cooler in January and hotter in July, that in 1982/1993/2005 there were outliers with lower avg. max temps in January (and several outliers in July), and that there were annual shifts in temperatures. Avg. max temperatures were at their lowest in Jan. 1994/2004, and July 1992/2000/2009. Conversely, they spiked approximately every 2-3 years in January and every 2-7 years in July. 
