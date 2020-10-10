@@ -152,7 +152,7 @@ accel_df %>%
   knitr::kable()
 ```
 
-From the table, we can see a few trends. A few: most activity occurs in the weekdays (Monday-Friday), high weekend activity dropped off after week 3, the two lowest activity days were on the last two Saturdays of observation, weeks two and three have the highest and most consistent activity, and activity counts are most consistently the same on Wednesdays. 
+From the table, we can see a few trends such as: most activity occurs in the weekdays (Monday-Friday), high weekend activity dropped off after week 3, the two lowest activity days were on the last two Saturdays of observation, weeks two and three have the highest and most consistent activity, and activity counts are most consistently the same on Wednesdays. 
 
 We can also make a plot... 
 
@@ -255,4 +255,4 @@ snowfall_p =
 tmaxmin_p + snowfall_p
 ```
 
-In the plots above, we can see the tmax vs. tmin for the full dataset and the distribution of snowfall for values 0-100, by year. The plots allow us to visualize these aspects. We can see that the temperatures are generally between -15 to +30 (C) and that snowfall tends to be seasonal with most of the snowfall is generally has the largest values around 1 - 35mm, 50mm, and 75mm. We can also see outliers in temp min and max and see the year to year changes in snowfall. 
+In the plots above, we can see the tmax vs. tmin for the full dataset and the distribution of snowfall for values 0-100, by year. The plots allow us to visualize these aspects. We can see that the temperatures are generally between -15 to +30 (C) and that most of the snowfall values are around 1 - 35mm, 50mm, and 75mm. We can also see outliers in temp min and max and see the year to year changes in snowfall. 
