@@ -157,8 +157,12 @@ We can also make a plot...
 
 ```{r}
 accel_df %>% 
+    mutate(
+    day = forcats::fct_relevel(day, "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+  ) %>% 
   ggplot(aes(x = minute_of_day, y = activity_count, color = day)) +
   geom_point() +
   geom_line()
 ```
 
+From the plot, we can see other trends. For example, 
