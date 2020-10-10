@@ -101,8 +101,33 @@ instacart %>%
 
 In this table, we see the mean hour of the day, per day of the week, that Pink Lady Apples and Coffee Ice Cream are ordered. Coffee Ice Cream is mainly ordered between hour 12 and 16. Pink Lady Apples are ordered around hours 11 and 15. 
 
+## Problem 2 
 
+Load and tidy the data... 
 
+```{r}
+accel_df = read_csv("./data/accel_data.csv")
+accel_df
+
+accel_df %>% 
+  pivot_longer(
+    activity.1:activity.1440, 
+    names_to = "minute_of_day",
+    values_to = "activity_count", 
+    names_prefix = "activity."
+  ) %>% 
+  mutate(
+    Wkend_vs_Wkday = case_when(
+      day == "Monday" ~ "Weekday",
+      day == "Tuesday" ~ "Weekday",
+      day == "Wednesday" ~ "Weekday", 
+      day == "Thursday" ~ "Weekday", 
+      day == "Friday" ~ "Weekday", 
+      day == "Saturday" ~ "Weekend", 
+      day == "Sunday" ~ "Weekend",
+    )
+  )
+```
 
 
 
