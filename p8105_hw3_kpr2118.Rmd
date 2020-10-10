@@ -151,4 +151,14 @@ accel_df %>%
   knitr::kable()
 ```
 
-From the table, we can see a few trends. 
+From the table, we can see a few trends. A few: most activity occurs in the weekdays (Monday-Friday), high weekend activity dropped off after week 3, the two lowest activity days were on the last two Saturdays of observation, weeks two and three have the highest and most consistent activity, and activity counts are most consistently the same on Wednesdays. 
+
+We can also make a plot... 
+
+```{r}
+accel_df %>% 
+  ggplot(aes(x = minute_of_day, y = activity_count, color = day)) +
+  geom_point() +
+  geom_line()
+```
+
